@@ -1,0 +1,6 @@
+[submodule "encoding.js"]
+	path = encoding.js
+	url = https://github.com/polygonplanet/encoding.js.git
+[submodule "parsimmon"]
+	path = parsimmon
+	url = https://github.com/jneen/parsimmon.git
