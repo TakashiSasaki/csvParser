@@ -1,28 +1,33 @@
 "use strict";
-var CsvParser = require("./csvParser.js");
-console.log(typeof CsvParser.CsvParser);
+var fs = require("fs");
+var assert = require("assert");
+var csvParser = require("./CsvParser.js");
 
-function testCsvParser(){
-  var csvParser = new CsvParser.CsvParser();
-	console.log(csvParser.comma.parse(","));
-	console.log(csvParser.dqInner.parse("abcde"));
-	console.log(csvParser.nonDq.parse("a"));
-	console.log(csvParser.nonComma.parse("a"));
-	console.log(csvParser.nonTab.parse("a"));
-	console.log(csvParser.dqField.parse("\"abcde\""));
-	console.log(csvParser.dqField.parse('"abcde"'));
-	console.log(csvParser.tabInner.parse("abcde"));
-	console.log(csvParser.commaInner.parse("abcdef"));
-	console.log(csvParser.interField.parse(" , "));
-	console.log(csvParser.interField.parse("\t"));
-	console.log(csvParser.interField.parse("\t,"));
-	console.log(csvParser.csvField.parse('"hello"'));
-	console.log(csvParser.csvLine.parse('"hello",1.23,"world"'));
-	console.log(csvParser.parse('hello,world,"1.234"\na,b,c'));
-	console.log(csvParser.parse('hello,world,1.234\na,b,c'));
+assert.equal(csvParser.comma.parse(",").value, ",");
+assert.equal(csvParser.nonDq.parse("a").value, "a");
+assert.equal(csvParser.nonDq.parse("1").value, "1");
+assert.equal(csvParser.nonComma.parse("b").value, "b");
+assert.equal(csvParser.nonTab.parse("a").value, "a");
+assert.equal(csvParser.dqField.parse("\"dqField\"").value, "\"dqField\"");
+assert.equal(csvParser.dqField.parse('"dqField"').value, '"dqField"');
+assert.equal(csvParser.dqInner.parse("abcde1").value, "abcde1");
+assert.equal(csvParser.tabInner.parse("tabInner").value, "tabInner");
+assert.equal(csvParser.commaInner.parse("commaInner").value, "commaInner");
+assert.equal(csvParser.interField.parse(" , ").value, " , ");
+assert.equal(csvParser.interField.parse("\t").value, "\t");
+assert.equal(csvParser.interField.parse("\t,").value, "\t,");
+assert.equal(csvParser.csvField.parse('"csvField"').value, '"csvField"');
+assert.deepEqual(csvParser.csvLine.parse('"hello",1.23,"world"').value, 
+  ['"hello"', "1.23", '"world"'] );
+assert.deepEqual(csvParser.parseCsv('hello,world,"1.234"\na,b,c'),
+  [["hello","world", '"1.234"'], ["a", "b", "c"]]);
+assert.deepEqual(csvParser.parseCsv('hello,world,1.234\na,b,c'),
+  [["hello", "world", "1.234"], ["a","b","c"]]);
 
-	console.log(csvParser.csvField.parse("\u{29e3d}"));
-}
+assert.equal(csvParser.csvField.parse("\u{29e3d}").value, "\u{29e3d}");
 
-testCsvParser();
+fs.readFile("testdata/hello.utf8", "utf8", function(err, text){
+  var result = csvParser.parseCsv(text);
+  assert.deepEqual(result, [ [ '"本日は"', '晴天なり' ], [ '' ] ]);
+});
 
