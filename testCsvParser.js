@@ -1,6 +1,7 @@
 "use strict";
 var fs = require("fs");
 var assert = require("assert");
+var encoding = require("./encoding.js/encoding.js");
 var csvParser = require("./CsvParser.js");
 
 assert.equal(csvParser.comma.parse(",").value, ",");
@@ -27,6 +28,28 @@ assert.deepEqual(csvParser.parseCsv('hello,world,1.234\na,b,c'),
 assert.equal(csvParser.csvField.parse("\u{29e3d}").value, "\u{29e3d}");
 
 fs.readFile("testdata/hello.utf8", "utf8", function(err, text){
+  assert.equal(encoding.detect(text), "UNICODE");
+  var result = csvParser.parseCsv(text);
+  assert.deepEqual(result, [ [ '"本日は"', '晴天なり' ], [ '' ] ]);
+});
+
+fs.readFile("testdata/hello.utf8", null, function(err, utf8Text){
+  assert.equal(encoding.detect(utf8Text), "UTF8")
+  var text = encoding.convert(utf8Text, {to:"UNICODE", from:"UTF8", type:"string"});
+  var result = csvParser.parseCsv(text);
+  assert.deepEqual(result, [ [ '"本日は"', '晴天なり' ], [ '' ] ]);
+});
+
+fs.readFile("testdata/hello.sjis", null, function(err, sjisText){
+  assert.equal(encoding.detect(sjisText), "SJIS")
+  var text = encoding.convert(sjisText, {to:"UNICODE", from:"SJIS", type:"string"});
+  var result = csvParser.parseCsv(text);
+  assert.deepEqual(result, [ [ '"本日は"', '晴天なり' ], [ '' ] ]);
+});
+
+fs.readFile("testdata/hello.utf16", null, function(err, utf16Text){
+  assert.equal(encoding.detect(utf16Text), "UTF16")
+  var text = encoding.convert(utf16Text, {to:"UNICODE", from:"UTF16", type:"string"});
   var result = csvParser.parseCsv(text);
   assert.deepEqual(result, [ [ '"本日は"', '晴天なり' ], [ '' ] ]);
 });
