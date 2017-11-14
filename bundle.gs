@@ -801,7 +801,7 @@ Parsimmon["fantasy-land/of"] = succeed;
 
 module.exports = Parsimmon;
 
-},{}],"CsvParser":[function(require,module,exports){
+},{}],"bundle":[function(require,module,exports){
 "use strict";
 var parsimmon = require("./parsimmon/src/parsimmon.js")
 
