@@ -4,8 +4,7 @@
     <base target="_top">
   </head>
   <body>
-    <textarea onChange="detectEncodingAndAlert()" id="textarea">
-    </textarea>
+    <textarea onChange="detectEncodingAndAlert()" id="textarea"></textarea>
   <?!=HtmlService.createHtmlOutputFromFile("js").getContent()?>
   <script>
     function detectEncodingAndAlert(){
