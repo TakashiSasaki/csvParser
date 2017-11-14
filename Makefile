@@ -1,4 +1,4 @@
-.PHONY: all test testCsvParser
+.PHONY: all test testCsvParser clean
 
 all: test CsvParser.gs js.html
 
@@ -11,6 +11,7 @@ js.html: js.js
 	(echo "<script>"; browserify $< ; echo "</script>") > $@
 
 CsvParser.gs: ./CsvParser.js
-	browserify -r ./CsvParser.js -o $@ 
+	browserify -r ./CsvParser.js:CsvParser -o $@ 
 
-
+clean:
+	rm -f CsvParser.gs js.html 
