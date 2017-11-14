@@ -1,2 +1,2 @@
-var encoding = require("./encoding.js/encoding.js");
+var hogehogehoge = require("./encoding.js/encoding.js");
 
