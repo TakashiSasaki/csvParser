@@ -11,8 +11,8 @@ function doGet() {
   
 */
 function csvDocument(text) {
-  var csvParser = require("CsvParser");
-  var result = csvParser.csvDocument(text);
+  var bundle = require("bundle");
+  var result = bundle.csvDocument(text);
   return result;
 }
 
