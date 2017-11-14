@@ -6288,10 +6288,9 @@ return Encoding;
 
 },{}],2:[function(require,module,exports){
 var encoding = require("./encoding.js/encoding.js");
-module.exports = {
-  encoding: encoding
+window.detectEncoding = function(x){
+  return encoding.detect(x);
 }
-
 
 
 },{"./encoding.js/encoding.js":1}]},{},[2]);
