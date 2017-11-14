@@ -1,17 +1,17 @@
 .PHONY: all test testCsvParser clean
 
-all: test CsvParser.gs CsvParser.html
+all: test bundle.gs bundle.js.html
 
 test: testCsvParser
 
 testCsvParser:
 	node testCsvParser.js
 
-CsvParser.html: ./CsvParser.gs
-	(echo "<script>"; cat CsvParser.gs ; echo "</script>") > $@
+bundle.js.html: bundle.gs
+	(echo "<script>"; cat $< ; echo "</script>") > $@
 
-CsvParser.gs: ./CsvParser.js
-	browserify -r ./$<:CsvParser -o $@ 
+bundle.gs: 
+	browserify -r ./CsvParser:CsvParser -o $@ 
 
 clean:
-	rm -f CsvParser.gs CsvParser.html 
+	rm -f bundle.gs bundle.js.html
