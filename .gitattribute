@@ -1,0 +1,7 @@
+*.csv binary
+*.tsv binary
+*.CSV binary
+*.TSV binary
+*.xls binary
+*.xlsx binary
+

@@ -1,0 +1,8 @@
+a	b	c
+"a
+a"	"b
+b"	"c
+c"
+="a" & CHAR(9) & "a"	="b" & CHAR(9) & "b"	="c" & CHAR(9) & "c"
+"a	a"	"b	b"	"c	c"
+=LEN(A4)	=LEN(B4)	=LEN(C4)
