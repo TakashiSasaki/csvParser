@@ -5,15 +5,13 @@
   </head>
   <body>
     <textarea onChange="detectEncodingAndAlert()" id="textarea"></textarea>
-  <?!=HtmlService.createHtmlOutputFromFile("CsvParser.js").getContent()?>
+  <?!=getCsvParser()?>
   <script>
     function detectEncodingAndAlert(){
-      var csvParser = require("CsvParser");
       var textarea = document.getElementById("textarea");
       var text = textarea.value;
-      alert(JSON.stringify(csvParser.csvDocument(text)));
+      alert(JSON.stringify(CsvParser.csvDocument(text)));
     }
   </script>
   </body>
 </html>
-
