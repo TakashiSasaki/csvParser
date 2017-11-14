@@ -10,7 +10,7 @@ testCsvParser:
 js.html: js.js
 	(echo "<script>"; browserify $< ; echo "</script>") > $@
 
-CsvParser.gs: CsvParser.js
-	browserify $< -r -o $@ 
+CsvParser.gs: ./CsvParser.js
+	browserify -r ./CsvParser.js -o $@ 
 
 
