@@ -6,6 +6,14 @@ function doGet() {
 }
 
 /**
+  load CsvParser in a script tag.
+*/
+function getCsvParser(){
+  var htmlOutput = HtmlService.createHtmlOutputFromFile("bundle.js");
+  return htmlOutput;
+}
+
+/**
   @param {String} text
   @returns {String[][]}
   
