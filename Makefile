@@ -8,10 +8,10 @@ testCsvParser:
 	node testCsvParser.js
 
 bundle.js.html: bundle.gs
-	(echo "<script>"; cat $< ; echo "</script>") > $@
+	(echo "<script>"; cat $< ; echo "var CsvParser = require("CsvParser");</script>") > $@
 
 bundle.gs: 
-	browserify -r ./CsvParser:CsvParser -o $@ 
+	browserify -r ./CsvParser:bundle -o $@ 
 
 clean:
 	rm -f bundle.gs bundle.js.html
