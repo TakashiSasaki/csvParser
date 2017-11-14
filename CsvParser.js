@@ -49,23 +49,19 @@ var csvDocument     = parsimmon.seqMap(leadingCsvLine.many(), csvLine.atMost(1),
                     function(x,y){return x.concat(y);});
 
 
-function parseCsv(text){
-  return csvDocument.parse(text).value;
-}
-
 module.exports = {
-  nonSpecial  : nonSpecial,
-  comma       : comma, 
-  dqInner     : dqInner,
-  nonDq       : nonDq,
-  nonComma    : nonComma,
-  nonTab      : nonTab,
-  dqField     : dqField,
-  tabInner    : tabInner,
-  commaInner  : commaInner,
-  interField  : interField,
-  csvField    : csvField,
-  csvLine     : csvLine,
-  parseCsv    : parseCsv,
+  nonSpecial  : function(x){return nonSpecial.parse(x).value;},
+  comma       : function(x){return comma.parse(x).value;}, 
+  dqInner     : function(x){return dqInner.parse(x).value;},
+  nonDq       : function(x){return nonDq.parse(x).value;},
+  nonComma    : function(x){return nonComma.parse(x).value;},
+  nonTab      : function(x){return nonTab.parse(x).value;},
+  dqField     : function(x){return dqField.parse(x).value;},
+  tabInner    : function(x){return tabInner.parse(x).value;},
+  commaInner  : function(x){return commaInner.parse(x).value;},
+  interField  : function(x){return interField.parse(x).value;},
+  csvField    : function(x){return csvField.parse(x).value;},
+  csvLine     : function(x){return csvLine.parse(x).value;},
+  csvDocument : function(x){return csvDocument.parse(x).value;}
 }
 
