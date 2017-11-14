@@ -54,3 +54,10 @@ fs.readFile("testdata/hello.utf16", null, function(err, utf16Text){
   assert.deepEqual(result, [ [ '"本日は"', '晴天なり' ], [ '' ] ]);
 });
 
+fs.readFile("pasteFromExcel/tabInCell.tsv", null, function(err, asciiText){
+  assert.equal(encoding.detect(asciiText), "ASCII")
+  var text = encoding.convert(asciiText, {to:"ASCII", from:"ASCII", type:"string"});
+  var result = csvParser.parseCsv(text);
+  console.log(result);
+});
+

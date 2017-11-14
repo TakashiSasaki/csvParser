@@ -20,7 +20,7 @@ var nonSpecial    = range1.or(range2).or(range3).
 
 var nonDq      = nonSpecial.or(ht).or(lf).or(cr).or(comma);
 var nonTab     = nonSpecial.or(comma).or(dq);
-var nonComma   = nonSpecial.or(ht).or(dq);
+var nonComma   = nonSpecial.or(dq);
 var dqdq       = parsimmon.seq(dq,dq).tie();
 var crlf       = parsimmon.seq(cr,lf).tie();
 
