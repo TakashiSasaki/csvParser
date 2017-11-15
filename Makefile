@@ -10,7 +10,7 @@ testCsvParser:
 bundle.js.html: bundle.gs
 	(echo "<script>"; cat $< ; echo "var CsvParser = require('bundle');</script>") > $@
 
-bundle.gs: 
+bundle.gs: ./CsvParser.js
 	browserify -r ./CsvParser:bundle -o $@ 
 
 clean:
