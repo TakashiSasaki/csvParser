@@ -55,6 +55,8 @@ assert.equal(csvParser.csvField("\u{29e3d}"), "\u{29e3d}");
 
 fs.readFile("multibyte/hello.utf8", "utf8", function(err, text){
   assert.equal(encoding.detect(text), "UNICODE");
+  assert.equal(encoding.detect(encoding.stringToCode(text)), "UNICODE");
+  //assert(encoding.isUNICODE(text));
   var result = csvParser.csvDocument(text);
   assert.deepEqual(result, [ [ '"本日は"', '晴天なり' ], [ '' ] ]);
 });
@@ -92,11 +94,12 @@ fs.readFile("pasteFromExcel/tabInCell.tsv", null, function(err, asciiText){
   [ "" ]]);
 });
 
-fs.readFile("kenqweb.txt", null, function(err, asciiText){
+fs.readFile("test.tsv", null, function(err, asciiText){
   //assert.equal(encoding.detect(asciiText), "UTF8");
   var text = encoding.convert(asciiText, {to:"UNICODE", from:"UTF8", type:"string"});
   var result = csvParser.tsvDocument(text);
   console.log(result);
 });
 
+//console.log(isUNICODE("佐々木"));
 

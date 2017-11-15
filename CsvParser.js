@@ -1,5 +1,5 @@
 "use strict";
-var parsimmon = require("./parsimmon/src/parsimmon.js")
+var parsimmon = require("./parsimmon/src/parsimmon.js");
 
 var range1        = parsimmon.range("\u0000", "\u0008");
 var ht            = parsimmon.string("\u0009");
@@ -64,6 +64,8 @@ var tsvLineAndSep   = parsimmon.seqMap(tsvLine, lineSeparator,
 var tsvDocument     = parsimmon.seqMap(tsvLineAndSep.many(), tsvLine.atMost(1), 
                     function(x,y){return x.concat(y);});
 
+var encoding = require("./encoding.js/encoding.js");
+
 module.exports = {
   nonSpecial  : function(x){return nonSpecial.parse(x).value;},
   comma       : function(x){return comma.parse(x).value;}, 
@@ -88,5 +90,17 @@ module.exports = {
   csvLine     : function(x){return csvLine.parse(x).value;},
   csvLineAndSep: function(x){return csvLineAndSep.parse(x).value;},
   csvDocument : function(x){return csvDocument.parse(x).value;},
+}
+
+function parseCsvText(text){
+  return csvDocument.parse(x).value;
+}
+
+function parseTsvText(text){
+  return tsvDocument.parse(x).value;
+}
+
+function parseSsvText(text){
+  return ssvDocument.parse(x).value;
 }
 
