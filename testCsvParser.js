@@ -89,7 +89,14 @@ fs.readFile("pasteFromExcel/tabInCell.tsv", null, function(err, asciiText){
   [ '"a\ta"', '"b\tb"', '"c\tc"' ],
   [ '"a\ta"', '"b\tb"', '"c\tc"' ],
   [ '3', '3', '3' ],
-  [] ]);
+  [ "" ]]);
+});
+
+fs.readFile("kenqweb.txt", null, function(err, asciiText){
+  //assert.equal(encoding.detect(asciiText), "UTF8");
+  var text = encoding.convert(asciiText, {to:"UNICODE", from:"UTF8", type:"string"});
+  var result = csvParser.tsvDocument(text);
+  console.log(result);
 });
 
 

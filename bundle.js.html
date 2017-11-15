@@ -834,11 +834,11 @@ var spaces     = space.many().tie();
 var htsps      = ht.or(space).many().tie();
 
 var insideDqs       = nonDq.or(dqdq).many().tie();
-var insideTabs      = nonTab.atLeast(1).tie();
+var insideTabs      = nonTab.many().tie();
 var insideCommas    = nonComma.many().tie();
 
 var csvSeparator    = parsimmon.seq(htsps, comma, htsps).tie();
-var tsvSeparator    = parsimmon.seq(ht).tie();
+var tsvSeparator    = ht;
 var lineSeparator   = crlf.or(lf).or(cr);
 
 //var dqInner         = nonDq.or(dqdq).many().tie();
