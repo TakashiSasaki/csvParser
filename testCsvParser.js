@@ -92,7 +92,7 @@ fs.readFile("pasteFromExcel/tabInCell.tsv", null, function(err, asciiText){
   [ "" ]]);
 });
 
-fs.readFile("kenqweb.txt", null, function(err, asciiText){
+fs.readFile("test.tsv", null, function(err, asciiText){
   //assert.equal(encoding.detect(asciiText), "UTF8");
   var text = encoding.convert(asciiText, {to:"UNICODE", from:"UTF8", type:"string"});
   var result = csvParser.tsvDocument(text);
