@@ -22,7 +22,7 @@ assert.equal(csvParser.tsvField('tsvField'), 'tsvField');
 assert.equal(csvParser.tsvField('"tsv\nField"'), '"tsv\nField"');
 assert.equal(csvParser.tsvField('"tsv\tField"'), '"tsv\tField"');
 assert.equal(csvParser.tsvFieldAndSep("abc\t"), "abc");
-assert.equal(csvParser.tsvFieldAndSep("abc\t\t"), "abc");
+assert.equal(csvParser.tsvFieldAndSep("abc\t"), "abc");
 assert.equal(csvParser.tsvFieldAndSep('"abc\t"\t'), '"abc\t"');
 assert.deepEqual(csvParser.tsvLine('"hello"\t1.23\t"world"'), 
   ['"hello"', "1.23", '"world"'] );

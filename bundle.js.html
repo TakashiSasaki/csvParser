@@ -838,7 +838,7 @@ var insideTabs      = nonTab.atLeast(1).tie();
 var insideCommas    = nonComma.many().tie();
 
 var csvSeparator    = parsimmon.seq(htsps, comma, htsps).tie();
-var tsvSeparator    = parsimmon.seq(hts).tie();
+var tsvSeparator    = parsimmon.seq(ht).tie();
 var lineSeparator   = crlf.or(lf).or(cr);
 
 //var dqInner         = nonDq.or(dqdq).many().tie();
