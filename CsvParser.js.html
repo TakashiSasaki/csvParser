@@ -7115,9 +7115,9 @@ var nonDq      = nonSpecial.or(ht).or(lf).or(cr).or(space).or(comma);
 var nonTab     = nonSpecial.or(space).or(comma).or(dq);
 var nonComma   = nonSpecial.or(space).or(dq);
 var dqdq       = parsimmon.seq(dq,dq).tie();
-var hts        = ht.atLeast(1).tie();
+//var hts        = ht.atLeast(1).tie();
 var crlf       = parsimmon.seq(cr,lf).tie();
-var spaces     = space.many().tie();
+//var spaces     = space.many().tie();
 var htsps      = ht.or(space).many().tie();
 
 //var insideDqs       = nonDq.or(dqdq).many().tie();
@@ -7126,17 +7126,19 @@ var htsps      = ht.or(space).many().tie();
 
 var csvSeparator    = parsimmon.seq(htsps, comma, htsps).tie();
 var tsvSeparator    = ht;
-var lineSeparator   = crlf.or(lf).or(cr);
+var ssvSeparator    = space.or(ht).atLeast(1).tie();
+var lineSeparator   = crlf.or(lf).or(cr).or(parsimmon.eof);
 
 //var dqInner         = nonDq.or(dqdq).many().tie();
 //var tabInner        = nonTab.many().tie();
 var dqField         = parsimmon.seq(dq, nonDq.or(dqdq).many().tie(), dq).tie()
-                      .lookahead(csvSeparator.or(tsvSeparator).or(lineSeparator).or(parsimmon.eof));
+                      .lookahead(csvSeparator.or(tsvSeparator).or(lineSeparator));
 var csvField        = dqField.or(nonSpecial.or(ht).or(space).or(dq).many().tie())
-                      .lookahead(csvSeparator.or(lineSeparator).or(parsimmon.eof));
+                      .lookahead(csvSeparator.or(lineSeparator));
 var tsvField        = dqField.or(nonSpecial.or(space).or(dq).or(comma).many().tie())
-                      .lookahead(tsvSeparator.or(lineSeparator).or(parsimmon.eof));
-
+                      .lookahead(tsvSeparator.or(lineSeparator));
+var ssvField        = dqField.or(nonSpecial.or(dq).or(comma).many().tie())
+                      .lookahead(ssvSeparator.or(lineSeparator));
 
 var csvFieldAndSep  = parsimmon.seqMap(csvField, csvSeparator,
                     function(x,y){return x;});
@@ -7154,6 +7156,15 @@ var tsvLine         = parsimmon.seqMap(tsvFieldAndSep.many(), tsvField.atMost(1)
 var tsvLineAndSep   = parsimmon.seqMap(tsvLine, lineSeparator,
                     function(x,y){return x;});
 var tsvDocument     = parsimmon.seqMap(tsvLineAndSep.many(), tsvLine.atMost(1), 
+                    function(x,y){return x.concat(y);});
+
+var ssvFieldAndSep  = parsimmon.seqMap(ssvField, ssvSeparator,
+                    function(x,y){return x;});
+var ssvLine         = parsimmon.seqMap(ssvSeparator.atMost(1), ssvFieldAndSep.many(), ssvField.atMost(1),
+                    function(x,y,z){return y.concat(z);});
+var ssvLineAndSep   = parsimmon.seqMap(ssvLine, lineSeparator,
+                    function(x,y){return x;}); 
+var ssvDocument     = parsimmon.seqMap(ssvLineAndSep.many(), ssvLine.atMost(1),
                     function(x,y){return x.concat(y);});
 
 var encoding = require("./encoding.js/encoding.js");
@@ -7182,6 +7193,13 @@ module.exports = {
   csvLine     : function(x){return csvLine.parse(x).value;},
   csvLineAndSep: function(x){return csvLineAndSep.parse(x).value;},
   csvDocument : function(x){return csvDocument.parse(x).value;},
+
+  ssvField    : function(x){return ssvField.parse(x).value;},
+  ssvSeparator: function(x){return ssvSeparator.parse(x).value;},
+  ssvFieldAndSep: function(x){return ssvFieldAndSep.parse(x).value;},
+  ssvLine     : function(x){return ssvLine.parse(x).value;},
+  ssvDocument : function(x){return ssvDocument.parse(x).value;},
+
 }
 
 function parseCsvText(text){

@@ -14,30 +14,47 @@ assert.equal(csvParser.dqField('"dqField"'), '"dqField"');
 //assert.equal(csvParser.insideDqs("abcde1"), "abcde1");
 //assert.equal(csvParser.insideTabs("insideTabs"), "insideTabs");
 //assert.equal(csvParser.insideCommas("insideCommas"), "insideCommas");
-assert.equal(csvParser.csvSeparator(" , "), " , ");
-assert.equal(csvParser.csvSeparator("\t,"), "\t,");
-assert.equal(csvParser.tsvSeparator("\t"), "\t");
+console.log("testing tsvFieldSeparator");
+assert.equal(csvParser.tsvFieldSeparator("\t"), "\t");
+
+console.log("testing tsvField");
 assert.equal(csvParser.tsvField('"tsvField"'), '"tsvField"');
 assert.equal(csvParser.tsvField('tsvField'), 'tsvField');
 assert.equal(csvParser.tsvField('"tsv\nField"'), '"tsv\nField"');
 assert.equal(csvParser.tsvField('"tsv\tField"'), '"tsv\tField"');
+
+console.log("testing tsvFieldAndSep");
 assert.equal(csvParser.tsvFieldAndSep("abc\t"), "abc");
 assert.equal(csvParser.tsvFieldAndSep("abc\t"), "abc");
 assert.equal(csvParser.tsvFieldAndSep('"abc\t"\t'), '"abc\t"');
+
 assert.deepEqual(csvParser.tsvLine('"hello"\t1.23\t"world"'), 
   ['"hello"', "1.23", '"world"'] );
+
+console.log("testing csvField");
 assert.equal(csvParser.csvField('"csvField"'), '"csvField"');
 assert.equal(csvParser.csvField('1.23'), '1.23');
 assert.equal(csvParser.csvField('1.23,"hello"'), undefined);
+assert.equal(csvParser.csvField("\u{29e3d}"), "\u{29e3d}");
+
+console.log("testing csvFieldSeparator");
+assert.equal(csvParser.csvFieldSeparator(" , "), " , ");
+assert.equal(csvParser.csvFieldSeparator("\t,"), "\t,");
+
+console.log("testing csvFieldAndSep");
 assert.equal(csvParser.csvFieldAndSep('"csvField" , '), '"csvField"');
 assert.equal(csvParser.csvFieldAndSep('1.23,'), '1.23');
 assert.equal(csvParser.csvFieldAndSep('1.23,"world"'), undefined);
+
+console.log("testing csvLine");
 assert.deepEqual(csvParser.csvLine('"hello",1.23,"world"'), 
   ['"hello"', "1.23", '"world"'] );
 assert.deepEqual(csvParser.csvLine('1.23,"world"'), 
   ["1.23", '"world"'] );
 assert.deepEqual(csvParser.tsvLine('1.23\t"world"'), 
   ["1.23", '"world"'] );
+
+console.log("testing csvLineAndSep");
 assert.deepEqual(csvParser.csvLineAndSep('1.23,"world"\n'), 
   ["1.23", '"world"'] );
 assert.deepEqual(csvParser.csvLineAndSep('"hello",1.23,"world"\n'), 
@@ -46,12 +63,31 @@ assert.deepEqual(csvParser.tsvLineAndSep('"hello"\t1.23\t"world"\n'),
   ['"hello"', "1.23", '"world"'] );
 assert.deepEqual(csvParser.tsvLineAndSep('"hello"\t1.23\t"world"\r'), 
   ['"hello"', "1.23", '"world"'] );
+
+console.log("testing csvDocument");
 assert.deepEqual(csvParser.csvDocument('hello,world,"1.234"\na,b,c'),
   [["hello","world", '"1.234"'], ["a", "b", "c"]]);
 assert.deepEqual(csvParser.csvDocument('hello,world,1.234\na,b,c'),
   [["hello", "world", "1.234"], ["a","b","c"]]);
 
-assert.equal(csvParser.csvField("\u{29e3d}"), "\u{29e3d}");
+
+console.log("testing ssvSeparator");
+assert.equal(csvParser.ssvFieldSeparator("   "),"   ");
+
+console.log("testing ssvField");
+assert.equal(csvParser.ssvField("ab\"cde"), "ab\"cde");
+
+console.log("testing ssvFieldAndSep");
+assert.equal(csvParser.ssvFieldAndSep("abcde "), "abcde");
+assert.equal(csvParser.ssvFieldAndSep("abcde \t "), "abcde");
+
+console.log("testing ssvLine");
+assert.deepEqual(csvParser.ssvLine("abcde"), ["abcde"]);
+assert.deepEqual(csvParser.ssvLine("ab cd ef"), ["ab", "cd", "ef"]);
+assert.deepEqual(csvParser.ssvLine("ab\"cde    fgh  "), ["ab\"cde", "fgh"]);
+
+console.log("testing ssvDocument");
+assert.deepEqual(csvParser.ssvDocument("ab cd\nef gh"), [["ab","cd"],["ef","gh"]]);
 
 fs.readFile("multibyte/hello.utf8", "utf8", function(err, text){
   assert.equal(encoding.detect(text), "UNICODE");
