@@ -1,3 +1,3 @@
 function myFunction() {
-  //renamed from helloWorld to helloworld
+  //created helloworld.gs
 }
