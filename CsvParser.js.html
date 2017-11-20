@@ -7098,31 +7098,31 @@ var ht            = parsimmon.string("\u0009");
 var lf            = parsimmon.string("\u000a");
 var range2        = parsimmon.range("\u000b", "\u000c");
 var cr            = parsimmon.string("\u000d");
-var range3        = parsimmon.range("\u000e", "\u0021");
+var range3        = parsimmon.range("\u000e", "\u001f");
+var space         = parsimmon.string("\u0020");
+var range4        = parsimmon.range("\u0021", "\u0021");
 var dq            = parsimmon.string("\u0022");
-var range4        = parsimmon.range("\u0023", "\u002b");
+var range5        = parsimmon.range("\u0023", "\u002b");
 var comma         = parsimmon.string("\u002c");
-var range5        = parsimmon.range("\u002d", "\ud7ff");
+var range6        = parsimmon.range("\u002d", "\ud7ff");
 var surrogateHigh = parsimmon.range("\ud800", "\udbff");
 var surrogateLow  = parsimmon.range("\udc00", "\udfff");
 var surrogate     = parsimmon.seq(surrogateHigh, surrogateLow).tie();
-var range6        = parsimmon.range("\ue000", "\uffff");
-var nonSpecial    = range1.or(range2).or(range3).
-                    or(range4).or(range5).or(range6).or(surrogate);
+var range7        = parsimmon.range("\ue000", "\uffff");
+var nonSpecial    = range1.or(range2).or(range3).or(range4).or(range5).or(range6).or(range7).or(surrogate);
 
-var nonDq      = nonSpecial.or(ht).or(lf).or(cr).or(comma);
-var nonTab     = nonSpecial.or(comma).or(dq);
-var nonComma   = nonSpecial.or(dq);
+var nonDq      = nonSpecial.or(ht).or(lf).or(cr).or(space).or(comma);
+var nonTab     = nonSpecial.or(space).or(comma).or(dq);
+var nonComma   = nonSpecial.or(space).or(dq);
 var dqdq       = parsimmon.seq(dq,dq).tie();
 var hts        = ht.atLeast(1).tie();
 var crlf       = parsimmon.seq(cr,lf).tie();
-var space      = parsimmon.string(" ");
 var spaces     = space.many().tie();
 var htsps      = ht.or(space).many().tie();
 
-var insideDqs       = nonDq.or(dqdq).many().tie();
-var insideTabs      = nonTab.many().tie();
-var insideCommas    = nonComma.many().tie();
+//var insideDqs       = nonDq.or(dqdq).many().tie();
+//var insideTabs      = nonTab.many().tie();
+//var insideCommas    = nonSpecial.or(space).or(dq).many().tie();
 
 var csvSeparator    = parsimmon.seq(htsps, comma, htsps).tie();
 var tsvSeparator    = ht;
@@ -7130,11 +7130,11 @@ var lineSeparator   = crlf.or(lf).or(cr);
 
 //var dqInner         = nonDq.or(dqdq).many().tie();
 //var tabInner        = nonTab.many().tie();
-var dqField         = parsimmon.seq(dq, insideDqs, dq).tie()
+var dqField         = parsimmon.seq(dq, nonDq.or(dqdq).many().tie(), dq).tie()
                       .lookahead(csvSeparator.or(tsvSeparator).or(lineSeparator).or(parsimmon.eof));
-var csvField        = dqField.or(insideCommas)
+var csvField        = dqField.or(nonSpecial.or(ht).or(space).or(dq).many().tie())
                       .lookahead(csvSeparator.or(lineSeparator).or(parsimmon.eof));
-var tsvField        = dqField.or(insideTabs)
+var tsvField        = dqField.or(nonSpecial.or(space).or(dq).or(comma).many().tie())
                       .lookahead(tsvSeparator.or(lineSeparator).or(parsimmon.eof));
 
 
@@ -7162,11 +7162,11 @@ module.exports = {
   nonSpecial  : function(x){return nonSpecial.parse(x).value;},
   comma       : function(x){return comma.parse(x).value;}, 
   nonDq       : function(x){return nonDq.parse(x).value;},
-  nonComma    : function(x){return nonComma.parse(x).value;},
+  //nonComma    : function(x){return nonComma.parse(x).value;},
   nonTab      : function(x){return nonTab.parse(x).value;},
-  insideDqs   : function(x){return insideDqs.parse(x).value;},
-  insideCommas: function(x){return insideCommas.parse(x).value;},
-  insideTabs  : function(x){return insideTabs.parse(x).value;},
+  //insideDqs   : function(x){return insideDqs.parse(x).value;},
+  //insideCommas: function(x){return insideCommas.parse(x).value;},
+  //insideTabs  : function(x){return insideTabs.parse(x).value;},
   dqField     : function(x){return dqField.parse(x).value;},
 
   tsvField    : function(x){return tsvField.parse(x).value;},
