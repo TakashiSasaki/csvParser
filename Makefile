@@ -3,7 +3,7 @@
 all: CsvParser.gs CsvParser.js.html
 
 test:
-	node testCsvParser.js
+	(node testCsvParser.js; node testEncoding.js)
 
 clean:
 	rm -f CsvParser.gs CsvParser.js.html
