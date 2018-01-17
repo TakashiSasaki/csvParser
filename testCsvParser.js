@@ -18,6 +18,7 @@ assert.equal(csvParser.tsvField('"tsvField"'), '"tsvField"');
 assert.equal(csvParser.tsvField('tsvField'), 'tsvField');
 assert.equal(csvParser.tsvField('"tsv\nField"'), '"tsv\nField"');
 assert.equal(csvParser.tsvField('"tsv\tField"'), '"tsv\tField"');
+assert.equal(csvParser.tsvField("\"abc\",123"), "\"abc\",123");
 
 console.log("testing tsvFieldAndSep");
 assert.equal(csvParser.tsvFieldAndSep("abc\t"), "abc");
