@@ -1,16 +1,16 @@
-.PHONY: all test testCsvParser clean
+.PHONY: all test testCsvParser clean gas
 
-all: CsvParser.gs CsvParser.js.html
+all: require.gs require.js.html
 
 test:
 	(node testCsvParser.js; node testEncoding.js)
 
 clean:
-	rm -f CsvParser.gs CsvParser.js.html
+	rm -f require.gs require.js.html
 
-CsvParser.js.html: CsvParser.gs
+require.js.html: require.gs
 	(echo "<script>"; cat $< ; echo "var CsvParser = require('CsvParser');</script>") > $@
 
-CsvParser.gs: ./CsvParser.js
+require.gs: ./CsvParser.js
 	browserify -r ./CsvParser:CsvParser -o $@ 
 
