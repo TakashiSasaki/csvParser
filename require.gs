@@ -7114,32 +7114,24 @@ var nonDq      = nonSpecial.or(ht).or(lf).or(cr).or(space).or(comma);
 var nonTab     = nonSpecial.or(space).or(comma).or(dq);
 var nonComma   = nonSpecial.or(space).or(dq);
 var dqdq       = parsimmon.seq(dq,dq).tie();
-//var hts        = ht.atLeast(1).tie();
 var crlf       = parsimmon.seq(cr,lf).tie();
-//var spaces     = space.many().tie();
 var htsps      = ht.or(space).many().tie();
 
-//var insideDqs       = nonDq.or(dqdq).many().tie();
-//var insideTabs      = nonTab.many().tie();
-//var insideCommas    = nonSpecial.or(space).or(dq).many().tie();
+var csvFieldSeparator    = parsimmon.seq(htsps, comma, htsps).tie();
+var tsvFieldSeparator    = ht;
+var ssvFieldSeparator    = space.or(ht).atLeast(1).tie();
+var lineSeparator   = crlf.or(lf).or(cr);
 
-var csvSeparator    = parsimmon.seq(htsps, comma, htsps).tie();
-var tsvSeparator    = ht;
-var ssvSeparator    = space.or(ht).atLeast(1).tie();
-var lineSeparator   = crlf.or(lf).or(cr).or(parsimmon.eof);
-
-//var dqInner         = nonDq.or(dqdq).many().tie();
-//var tabInner        = nonTab.many().tie();
 var dqField         = parsimmon.seq(dq, nonDq.or(dqdq).many().tie(), dq).tie()
-                      .lookahead(csvSeparator.or(tsvSeparator).or(lineSeparator));
+                      .lookahead(csvFieldSeparator.or(tsvFieldSeparator).or(lineSeparator).or(parsimmon.eof));
 var csvField        = dqField.or(nonSpecial.or(ht).or(space).or(dq).many().tie())
-                      .lookahead(csvSeparator.or(lineSeparator));
+                      .lookahead(csvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
 var tsvField        = dqField.or(nonSpecial.or(space).or(dq).or(comma).many().tie())
-                      .lookahead(tsvSeparator.or(lineSeparator));
-var ssvField        = dqField.or(nonSpecial.or(dq).or(comma).many().tie())
-                      .lookahead(ssvSeparator.or(lineSeparator));
+                      .lookahead(tsvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
+var ssvField        = dqField.or(nonSpecial.or(dq).or(comma).atLeast(1).tie())
+                      .lookahead(ssvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
 
-var csvFieldAndSep  = parsimmon.seqMap(csvField, csvSeparator,
+var csvFieldAndSep  = parsimmon.seqMap(csvField, csvFieldSeparator,
                     function(x,y){return x;});
 var csvLine         = parsimmon.seqMap(csvFieldAndSep.many(), csvField.atMost(1), 
                     function(x,y){return x.concat(y);});
@@ -7148,7 +7140,7 @@ var csvLineAndSep   = parsimmon.seqMap(csvLine, lineSeparator,
 var csvDocument     = parsimmon.seqMap(csvLineAndSep.many(), csvLine.atMost(1), 
                     function(x,y){return x.concat(y);});
 
-var tsvFieldAndSep  = parsimmon.seqMap(tsvField, tsvSeparator,
+var tsvFieldAndSep  = parsimmon.seqMap(tsvField, tsvFieldSeparator,
                     function(x,y){return x;});
 var tsvLine         = parsimmon.seqMap(tsvFieldAndSep.many(), tsvField.atMost(1),
                     function(x,y){return x.concat(y);});
@@ -7157,10 +7149,16 @@ var tsvLineAndSep   = parsimmon.seqMap(tsvLine, lineSeparator,
 var tsvDocument     = parsimmon.seqMap(tsvLineAndSep.many(), tsvLine.atMost(1), 
                     function(x,y){return x.concat(y);});
 
-var ssvFieldAndSep  = parsimmon.seqMap(ssvField, ssvSeparator,
+var ssvFieldAndSep  = parsimmon.seqMap(ssvField, ssvFieldSeparator,
                     function(x,y){return x;});
-var ssvLine         = parsimmon.seqMap(ssvSeparator.atMost(1), ssvFieldAndSep.many(), ssvField.atMost(1),
-                    function(x,y,z){return y.concat(z);});
+var ssvLine         = parsimmon.seqMap(ssvFieldSeparator.atMost(1), ssvFieldAndSep.many(), ssvField.atMost(1),
+                    function(x,y,z){
+                      if(z.length > 0){ 
+                        return y.concat(z);
+                      } else {
+                        return y;
+                      }
+                    });
 var ssvLineAndSep   = parsimmon.seqMap(ssvLine, lineSeparator,
                     function(x,y){return x;}); 
 var ssvDocument     = parsimmon.seqMap(ssvLineAndSep.many(), ssvLine.atMost(1),
@@ -7180,21 +7178,21 @@ module.exports = {
   dqField     : function(x){return dqField.parse(x).value;},
 
   tsvField    : function(x){return tsvField.parse(x).value;},
-  tsvSeparator: function(x){return tsvSeparator.parse(x).value;},
+  tsvFieldSeparator: function(x){return tsvFieldSeparator.parse(x).value;},
   tsvFieldAndSep: function(x){return tsvFieldAndSep.parse(x).value;},
   tsvLine     : function(x){return tsvLine.parse(x).value;},
   tsvLineAndSep: function(x){return tsvLineAndSep.parse(x).value;},
   tsvDocument : function(x){return tsvDocument.parse(x).value;},
 
   csvField    : function(x){return csvField.parse(x).value;},
-  csvSeparator: function(x){return csvSeparator.parse(x).value;},
+  csvFieldSeparator: function(x){return csvFieldSeparator.parse(x).value;},
   csvFieldAndSep: function(x){return csvFieldAndSep.parse(x).value;},
   csvLine     : function(x){return csvLine.parse(x).value;},
   csvLineAndSep: function(x){return csvLineAndSep.parse(x).value;},
   csvDocument : function(x){return csvDocument.parse(x).value;},
 
   ssvField    : function(x){return ssvField.parse(x).value;},
-  ssvSeparator: function(x){return ssvSeparator.parse(x).value;},
+  ssvFieldSeparator: function(x){return ssvFieldSeparator.parse(x).value;},
   ssvFieldAndSep: function(x){return ssvFieldAndSep.parse(x).value;},
   ssvLine     : function(x){return ssvLine.parse(x).value;},
   ssvDocument : function(x){return ssvDocument.parse(x).value;},
