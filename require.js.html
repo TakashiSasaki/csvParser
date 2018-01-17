@@ -7123,13 +7123,15 @@ var tsvFieldSeparator    = ht;
 var ssvFieldSeparator    = space.or(ht).atLeast(1).tie();
 var lineSeparator   = crlf.or(lf).or(cr);
 
-var dqField         = parsimmon.seq(dq, nonDq.or(dqdq).many().tie(), dq).tie()
-                      .lookahead(csvFieldSeparator.or(tsvFieldSeparator).or(lineSeparator).or(parsimmon.eof));
-var csvField        = dqField.or(nonSpecial.or(ht).or(space).or(dq).many().tie())
+var dqField         = parsimmon.seq(dq, nonDq.or(dqdq).many().tie(), dq).tie();
+var csvDqField      = dqField.lookahead(csvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
+var tsvDqField      = dqField.lookahead(tsvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
+var ssvDqField      = dqField.lookahead(ssvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
+var csvField        = csvDqField.or(nonSpecial.or(ht).or(space).or(dq).many().tie())
                       .lookahead(csvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
-var tsvField        = dqField.or(nonSpecial.or(space).or(dq).or(comma).many().tie())
+var tsvField        = tsvDqField.or(nonSpecial.or(space).or(dq).or(comma).many().tie())
                       .lookahead(tsvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
-var ssvField        = dqField.or(nonSpecial.or(dq).or(comma).atLeast(1).tie())
+var ssvField        = ssvDqField.or(nonSpecial.or(dq).or(comma).atLeast(1).tie())
                       .lookahead(ssvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
 
 var csvFieldAndSep  = parsimmon.seqMap(csvField, csvFieldSeparator,
