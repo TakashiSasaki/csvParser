@@ -1,6 +1,6 @@
 /**
-  @param {String} text
-  @returns {String}
+  @param {string} text
+  @returns {string}
 */
 function tsvSeparator(text) {
   if(text === undefined) text = "\t";
@@ -11,8 +11,8 @@ function tsvSeparator(text) {
 }
 
 /**
-  @param {String} text
-  @returns {String}
+  @param {string} text
+  @returns {string}
 */
 function tsvField(text) {
   if(text === undefined) text = "abc";
@@ -20,5 +20,15 @@ function tsvField(text) {
   Logger.log(typeof x.tsvField);
   var result = x.tsvField(text);
   Logger.log(result);
+  return result;
+}
+
+/**
+  @param tsvString {string}
+  @return {[[string|number|boolean|null]]}
+*/
+function tsvDocument(tsvString){
+  var csvParser = require("CsvParser");
+  var result = csvParser.tsvDocument(x);
   return result;
 }
