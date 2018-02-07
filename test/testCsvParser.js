@@ -1,6 +1,6 @@
 "use strict";
 var assert = require("assert");
-var csvParser = require("./CsvParser.js");
+var csvParser = require("../CsvParser.js");
 
 console.log("testing charset definition");
 assert.equal(csvParser.comma(","), ",");

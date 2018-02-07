@@ -1,9 +1,9 @@
-.PHONY: all test testCsvParser clean gas
+.PHONY: all test testCsvParser clean multibyte
 
 all: require.gs require.js.html
 
-test:
-	(node testCsvParser.js; node testEncoding.js)
+test: multibyte
+	make -C test
 
 clean:
 	rm -f require.gs require.js.html
@@ -13,4 +13,8 @@ require.js.html: require.gs
 
 require.gs: ./CsvParser.js
 	browserify -r ./CsvParser:CsvParser -o $@ 
+
+multibyte:
+	make -C multibyte
+
 
