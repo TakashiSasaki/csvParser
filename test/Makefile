@@ -1,8 +1,12 @@
 NODE=$(if $(shell which node),node,/drives/p/node-v11.6.0-win-x64/node.exe)
 
-.PHONY: test testCsvParser.js testEncoding.js
+.PHONY: test
 
-test: testCsvParser.js testEncoding.js
+test: testCsvParser.js testEncoding.js empty.ldjson oneline.ldjson example1.ldjson
+	date | $(NODE) csv2ldjson.js
+
+%.ldjson: %.csv
+	cat "$<" | $(NODE) csv2ldjson.js > "$@"
 
 testCsvParser.js:
 	$(NODE) testCsvParser.js
