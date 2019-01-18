@@ -1,14 +1,13 @@
-NODE=$(if $(shell which node),node,/drives/p/node-v11.6.0-win-x64/node.exe)
+#NODE=$(if $(shell which node),node,/drives/p/node-win-x64/node.exe)
+ifndef NODE
+ $(error NODE should be set to an executable binary file of node.js)
+endif
 
-.PHONY: test
+.PHONY: test testCsvParser.js testEncoding.js
+
 #.DELETE_ON_ERROR:
 
-test: testCsvParser.js testEncoding.js empty.ldjson oneline.ldjson
-	date | $(NODE) csv2ldjson.js
-
-%.ldjson: %.csv
-	cat "$<" | $(NODE) csv2ldjson.js > "$@"
-	diff "$@" "$@.good"
+test: testCsvParser.js testEncoding.js
 
 testCsvParser.js:
 	$(NODE) testCsvParser.js
