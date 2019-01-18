@@ -19,5 +19,9 @@
     "ke"
   ],
   "author": "Takashi SASAKI",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "encoding-japanese": "^1.0.29",
+    "parsimmon": "file:parsimmon"
+  }
 }

@@ -7,3 +7,4 @@ hello.utf16
 hello.utf8
 .CsvParser.gs.swp
 *.swo
+node_modules/
