@@ -6,7 +6,9 @@ endif
 .PHONY: test
 .DELETE_ON_ERROR:
 
-test: test.ldjson
+test: empty.ldjson oneline.ldjson test.ldjson
+	diff empty.ldjson.good ../csv2ldjson/empty.ldjson.good
+	diff oneline.ldjson.good ../csv2ldjson/oneline.ldjson.good
 
 %.ldjson.good: %.tsv
 	cat "$<" | $(NODE) tsv2ldjson.js > "$@"
