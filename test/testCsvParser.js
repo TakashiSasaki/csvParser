@@ -3,6 +3,8 @@ var assert = require("assert");
 var csvParser = require("../CsvParser.js");
 
 console.log("testing charset definition");
+assert.equal("\n", "\u000a");
+assert.equal("\r", "\u000d");
 assert.equal(csvParser.comma(","), ",");
 assert.equal(csvParser.nonDq("a"), "a");
 assert.equal(csvParser.nonDq("1"), "1");
@@ -10,10 +12,19 @@ assert.equal(csvParser.nonTab("a"), "a");
 assert.equal(csvParser.dqField("\"dqField\""), "\"dqField\"");
 assert.equal(csvParser.dqField('"dqField"'), '"dqField"');
 
+console.log("testing lineSeparator");
+assert.equal(csvParser.lineSeparator("\r"), "\r");
+assert.equal(csvParser.lineSeparator("\n"), "\n");
+assert.equal(csvParser.lineSeparator("\r\n"), "\r\n");
+
 console.log("testing tsvFieldSeparator");
 assert.equal(csvParser.tsvFieldSeparator("\t"), "\t");
 
 console.log("testing tsvField");
+assert.equal(csvParser.dqField('"dqField"'), '"dqField"');
+assert.equal(csvParser.dqField('"tsvDqField"'), '"tsvDqField"');
+assert.equal(csvParser.tsvDqField('"tsvDqField"'), '"tsvDqField"');
+assert.equal(csvParser.tsvNonDqField('tsvNonDqField'), 'tsvNonDqField');
 assert.equal(csvParser.tsvField('"tsvField"'), '"tsvField"');
 assert.equal(csvParser.tsvField('tsvField'), 'tsvField');
 assert.equal(csvParser.tsvField('"tsv\nField"'), '"tsv\nField"');

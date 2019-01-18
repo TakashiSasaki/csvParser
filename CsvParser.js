@@ -35,12 +35,12 @@ var dqField         = parsimmon.seq(dq, nonDq.or(dqdq).many().tie(), dq).tie();
 var csvDqField      = dqField.lookahead(csvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
 var tsvDqField      = dqField.lookahead(tsvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
 var ssvDqField      = dqField.lookahead(ssvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
-var csvField        = csvDqField.or(nonSpecial.or(ht).or(space).or(dq).many().tie())
-                      .lookahead(csvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
-var tsvField        = tsvDqField.or(nonSpecial.or(space).or(dq).or(comma).many().tie())
-                      .lookahead(tsvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
-var ssvField        = ssvDqField.or(nonSpecial.or(dq).or(comma).atLeast(1).tie())
-                      .lookahead(ssvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
+var csvNonDqField   = nonSpecial.or(ht).or(space).or(dq).many().tie().lookahead(csvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
+var tsvNonDqField   = nonSpecial.or(space).or(dq).or(comma).many().tie().lookahead(tsvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
+var ssvNonDqField   = nonSpecial.or(dq).or(comma).atLeast(1).tie().lookahead(ssvFieldSeparator.or(lineSeparator).or(parsimmon.eof));
+var csvField        = csvDqField.or(csvNonDqField);
+var tsvField        = tsvDqField.or(tsvNonDqField);
+var ssvField        = ssvDqField.or(ssvNonDqField);
 
 var csvFieldAndSep  = parsimmon.seqMap(csvField, csvFieldSeparator,
                     function(x,y){return x;});
@@ -87,8 +87,11 @@ module.exports = {
   //insideCommas: function(x){return insideCommas.parse(x).value;},
   //insideTabs  : function(x){return insideTabs.parse(x).value;},
   dqField     : function(x){return dqField.parse(x).value;},
+  lineSeparator : function(x){return lineSeparator.parse(x).value;},
 
   tsvField    : function(x){return tsvField.parse(x).value;},
+  tsvDqField  : function(x){return tsvDqField.parse(x).value;},
+  tsvNonDqField: function(x){return tsvNonDqField.parse(x).value;},
   tsvFieldSeparator: function(x){return tsvFieldSeparator.parse(x).value;},
   tsvFieldAndSep: function(x){return tsvFieldAndSep.parse(x).value;},
   tsvLine     : function(x){return tsvLine.parse(x).value;},
