@@ -1,14 +1,14 @@
-export NODEDIR=/drives/p/node-win-x64
-export NODE=$(if $(shell which node),node,$(NODEDIR)/node.exe)
-export NPM=$(if $(shell which npm),npm,$(NODEDIR)/npm.cmd)
+include node.mk
 
 .PHONY: all test testCsvParser clean multibyte \
 	ls-node-win
 
+test: multibyte
+	make -C tsv2ldjson 
+	make -C test
+
 all: require.gs require.js.html
 
-test: multibyte
-	make -C test
 
 clean:
 	rm -f require.gs require.js.html
