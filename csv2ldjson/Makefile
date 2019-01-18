@@ -6,7 +6,10 @@ endif
 .PHONY: test
 .DELETE_ON_ERROR:
 
-test: empty.ldjson oneline.ldjson
+test: empty.ldjson oneline.ldjson twolines.ldjson
+
+%.ldjson.good: %.csv
+	cat "$<" | $(NODE) csv2ldjson.js > "$@"
 
 %.ldjson: %.csv
 	cat "$<" | $(NODE) csv2ldjson.js > "$@"
