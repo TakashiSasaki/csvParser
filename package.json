@@ -14,11 +14,12 @@
     "url": "aaa"
   },
   "keywords": [
-    "ke",
-    "ke",
-    "ke"
+    "CSV",
+    "TSV",
+    "parser"
   ],
   "author": "Takashi SASAKI",
+  "email": "takashi316@gmail.com",
   "license": "ISC",
   "devDependencies": {
     "encoding-japanese": "^1.0.29",
