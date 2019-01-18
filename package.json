@@ -1,0 +1,23 @@
+{
+  "name": "xsvparser",
+  "version": "0.0.1",
+  "description": "Parse TSV, CSV and SSV (space separated values)",
+  "main": "csv2ldjson.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "aaa"
+  },
+  "keywords": [
+    "ke",
+    "ke",
+    "ke"
+  ],
+  "author": "Takashi SASAKI",
+  "license": "ISC"
+}
