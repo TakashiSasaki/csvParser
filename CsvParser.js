@@ -50,6 +50,7 @@ var csvLineAndSep   = parsimmon.seqMap(csvLine, lineSeparator,
                     function(x,y){return x;});
 var csvDocument     = parsimmon.seqMap(csvLineAndSep.many(), csvLine.atMost(1), 
                     function(x,y){return x.concat(y);});
+var csvTextFile     = parsimmon.seqMap(csvLineAndSep.many(), function(x){return x;});
 
 var tsvFieldAndSep  = parsimmon.seqMap(tsvField, tsvFieldSeparator,
                     function(x,y){return x;});
@@ -59,6 +60,7 @@ var tsvLineAndSep   = parsimmon.seqMap(tsvLine, lineSeparator,
                     function(x,y){return x;});
 var tsvDocument     = parsimmon.seqMap(tsvLineAndSep.many(), tsvLine.atMost(1), 
                     function(x,y){return x.concat(y);});
+var tsvTextFile     = parsimmon.seqMap(tsvLineAndSep.many(), function(x){return x;});
 
 var ssvFieldAndSep  = parsimmon.seqMap(ssvField, ssvFieldSeparator,
                     function(x,y){return x;});
@@ -74,6 +76,7 @@ var ssvLineAndSep   = parsimmon.seqMap(ssvLine, lineSeparator,
                     function(x,y){return x;}); 
 var ssvDocument     = parsimmon.seqMap(ssvLineAndSep.many(), ssvLine.atMost(1),
                     function(x,y){return x.concat(y);});
+var ssvTextFile     = parsimmon.seqMap(ssvLineAndSep.many(), function(x){return x;});
 
 var encoding = require("./encoding.js/encoding.js");
 
@@ -97,6 +100,7 @@ module.exports = {
   tsvLine     : function(x){return tsvLine.parse(x).value;},
   tsvLineAndSep: function(x){return tsvLineAndSep.parse(x).value;},
   tsvDocument : function(x){return tsvDocument.parse(x).value;},
+  tsvTextFile : function(x){return tsvTextFile.parse(x).value;},
 
   csvField    : function(x){return csvField.parse(x).value;},
   csvFieldSeparator: function(x){return csvFieldSeparator.parse(x).value;},
@@ -104,12 +108,14 @@ module.exports = {
   csvLine     : function(x){return csvLine.parse(x).value;},
   csvLineAndSep: function(x){return csvLineAndSep.parse(x).value;},
   csvDocument : function(x){return csvDocument.parse(x).value;},
+  csvTextFile : function(x){return csvTextFile.parse(x).value;},
 
   ssvField    : function(x){return ssvField.parse(x).value;},
   ssvFieldSeparator: function(x){return ssvFieldSeparator.parse(x).value;},
   ssvFieldAndSep: function(x){return ssvFieldAndSep.parse(x).value;},
   ssvLine     : function(x){return ssvLine.parse(x).value;},
   ssvDocument : function(x){return ssvDocument.parse(x).value;},
+  ssvTextFile : function(x){return ssvTextFile.parse(x).value;},
 
 }
 

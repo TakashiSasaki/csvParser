@@ -43,6 +43,9 @@ assert.deepEqual(csvParser.tsvLine('"hello"\t1.23\t"world"'),
 console.log("testing tsvDocument");
 assert.deepEqual(csvParser.tsvDocument("a\t\tb\tc"), [["a","","b","c"]] );
 
+console.log("testing tsvTextFile");
+assert.deepEqual(csvParser.tsvTextFile("a\t\tb\tc\n"), [["a","","b","c"]] );
+
 console.log("testing csvField");
 assert.equal(csvParser.csvField('"csvField"'), '"csvField"');
 assert.equal(csvParser.csvField('1.23'), '1.23');
