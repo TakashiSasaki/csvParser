@@ -3,7 +3,7 @@ NODE=$(if $(shell which node),node,/drives/p/node-v11.6.0-win-x64/node.exe)
 .PHONY: test
 #.DELETE_ON_ERROR:
 
-test: testCsvParser.js testEncoding.js empty.ldjson oneline.ldjson example1.ldjson
+test: testCsvParser.js testEncoding.js empty.ldjson oneline.ldjson
 	date | $(NODE) csv2ldjson.js
 
 %.ldjson: %.csv
