@@ -1,5 +1,6 @@
-NODE=$(if $(shell which node),node,/drives/p/node-v11.6.0-win-x64/node.exe)
-NPM=$(if $(shell which npm),npm,/drives/p/node-v11.6-win-x64/npm.cmd)
+NODEDIR=/drives/p/node-win-x64
+NODE=$(if $(shell which node),node,$(NODEDIR)/node.exe)
+NPM=$(if $(shell which npm),npm,$(NODEDIR)/npm.cmd)
 
 .PHONY: all test testCsvParser clean multibyte \
 	ls-node-win
@@ -28,3 +29,6 @@ ls-node-win:
 	ls -l /drives/p/Download/
 	ls -l /drives/p/node-win-x64/
 	ls -l /drives/p/node-win-x64/npm.cmd
+
+npm-init:
+	$(NPM) init
