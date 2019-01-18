@@ -8,6 +8,8 @@ process.stdin.on('data', function(chunk) {
   input += chunk;
 });
 process.stdin.on('end', function() {
-  console.log(csvParser.csvTextFile(input));
+  var parsed_array = csvParser.csvTextFile(input);
+  var json_string = JSON.stringify(parsed_array);
+  console.log(json_string);
 });
 
