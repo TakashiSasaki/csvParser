@@ -9,3 +9,5 @@ hello.sjis
 hello.utf16
 hello.utf8
 node_modules/
+require.gs
+require.js.html

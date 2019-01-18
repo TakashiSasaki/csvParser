@@ -25,5 +25,8 @@
   "devDependencies": {
     "encoding-japanese": "^1.0.29",
     "parsimmon": "file:parsimmon"
+  },
+  "dependencies": {
+    "browserify": "^16.2.3"
   }
 }

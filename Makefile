@@ -1,7 +1,7 @@
 include node.mk
 
-.PHONY: all test testCsvParser clean \
-	ls-node-win npm-init npm-install npm-link
+.PHONY: all test clean \
+	ls-node-win npm-init npm-install npm-link 
 
 test: 
 	make -C multibyte
@@ -17,12 +17,13 @@ all: require.gs require.js.html
 
 clean:
 	rm -f require.gs require.js.html
+	git clean -fdx
 
-require.js.html: require.gs
+require.js.html: require.gs node_modules/
 	(echo "<script>"; cat $< ; echo "var CsvParser = require('CsvParser');</script>") > $@
 
 require.gs: ./CsvParser.js
-	browserify -r ./CsvParser:CsvParser -o $@ 
+	$(NPX) browserify -r ./CsvParser:CsvParser -o $@ 
 
 ls-node-win:
 	./ver.cmd
@@ -38,6 +39,7 @@ npm-init:
 npm-install:
 	$(NPM) install parsimmon --save-dev 
 	$(NPM) install encoding-japanese --save-dev 
+	$(NPM) install browserify
 	$(NPM) install
 
 npm-link:
