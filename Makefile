@@ -36,6 +36,7 @@ npm-init:
 npm-install:
 	$(NPM) install parsimmon --save-dev 
 	$(NPM) install encoding-japanese --save-dev 
+	$(NPM) install
 
 npm-link:
 	$(NPM) link

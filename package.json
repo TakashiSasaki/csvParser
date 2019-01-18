@@ -2,16 +2,17 @@
   "name": "xsvparser",
   "version": "0.0.1",
   "description": "Parse TSV, CSV and SSV (space separated values)",
-  "main": "csv2ldjson.js",
+  "main": "csvParser.js",
   "directories": {
-    "test": "test"
+    "test": "test",
+    "csv2ldjson": "csv2ldjson"
   },
   "scripts": {
-    "test": "test.js"
+    "test": "make test"
   },
   "repository": {
     "type": "git",
-    "url": "aaa"
+    "url": "https://github.com/TakashiSasaki/csvParser"
   },
   "keywords": [
     "CSV",

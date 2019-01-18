@@ -1,10 +1,11 @@
-.csvParser.js.swp
-.Makefile.swp
+*.swo
+*.swp
+.CsvParser.gs.swp
 .CsvParser.js.swp
+.Makefile.swp
+.csvParser.js.swp
 .testCsvParser.js.swp
 hello.sjis
 hello.utf16
 hello.utf8
-.CsvParser.gs.swp
-*.swo
 node_modules/
