@@ -1,14 +1,19 @@
 include node.mk
 
-.PHONY: all test testCsvParser clean multibyte \
-	ls-node-win
+.PHONY: all test testCsvParser clean \
+	ls-node-win npm-init npm-install npm-link
 
-test: multibyte
-	make -C tsv2ldjson 
+test: 
+	make -C multibyte
 	make -C test
+	make -C tsv2ldjson 
+	make -C tsv2json 
+	make -C csv2ldjson 
+	make -C csv2json 
+
+node_modules/: npm-install
 
 all: require.gs require.js.html
-
 
 clean:
 	rm -f require.gs require.js.html
@@ -18,9 +23,6 @@ require.js.html: require.gs
 
 require.gs: ./CsvParser.js
 	browserify -r ./CsvParser:CsvParser -o $@ 
-
-multibyte:
-	make -C multibyte
 
 ls-node-win:
 	./ver.cmd
